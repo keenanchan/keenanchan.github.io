@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CopyEmailButton from '../components/CopyEmailButton';
+import { site } from '../data/site';
+---
+
+<BaseLayout title={`Contact — ${site.name}`}>
+  <h1>Contact</h1>
+  <p>Excited to meet people and talk data. Let's connect!</p>
+
+  <div class="methods">
+    <div class="method">
+      <span class="label muted">Email</span>
+      <a href={`mailto:${site.email}`}>{site.email}</a>
+    </div>
+    <div class="method">
+      <span class="label muted">Phone</span>
+      <span>{site.phone}</span>
+    </div>
+  </div>
+
+  <div class="actions">
+    <a class="btn primary" href={`mailto:${site.email}`}>Schedule a call</a>
+    <CopyEmailButton client:load email={site.email} />
+  </div>
+
+  <h2>Elsewhere</h2>
+  <ul class="chip-row">
+    {
+      site.socials.map(({ label, url }) => (
+        <li>
+          <a class="chip" href={url} target="_blank" rel="noopener noreferrer">
+            {label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>
+
+<style>
+  .methods {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    margin: 2rem 0;
+  }
+
+  .method {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .chip-row a.chip:hover {
+    border-color: var(--accent);
+    text-decoration: none;
+    color: var(--text);
+  }
+</style>

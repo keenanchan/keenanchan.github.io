@@ -1,0 +1,84 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { title, description, date, url, image, imageAlt, tags } = project.data;
+const dateLabel = date.toLocaleDateString('en-US', {
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+---
+
+<article class="card">
+  <a href={url} target="_blank" rel="noopener noreferrer">
+    <Image src={image} alt={imageAlt} width={720} class="cover" />
+    <div class="body">
+      <h3>{title}</h3>
+      <p class="muted description">{description}</p>
+      <p class="meta">
+        <span class="muted">{dateLabel}</span>
+        {tags.map((tag) => <span class="chip">{tag}</span>)}
+      </p>
+    </div>
+  </a>
+</article>
+
+<style>
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 0.9rem;
+    overflow: hidden;
+    background: var(--bg-alt);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
+
+  .card > a {
+    color: inherit;
+    display: block;
+  }
+
+  .card > a:hover {
+    text-decoration: none;
+  }
+
+  .cover {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+  }
+
+  .body {
+    padding: 1rem 1.15rem 1.15rem;
+  }
+
+  h3 {
+    margin: 0 0 0.4rem;
+    font-size: 1.1rem;
+  }
+
+  .description {
+    margin: 0 0 0.75rem;
+    font-size: 0.93rem;
+  }
+
+  .meta {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+  }
+</style>

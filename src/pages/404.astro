@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+---
+
+<BaseLayout title={`Not found — ${site.name}`}>
+  <h1>404</h1>
+  <p class="muted">This page doesn't exist — maybe it got lost in the data.</p>
+  <p><a href="/">← Back home</a></p>
+</BaseLayout>

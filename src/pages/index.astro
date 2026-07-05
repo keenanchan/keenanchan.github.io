@@ -1,0 +1,97 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { site } from '../data/site';
+import headshot from '../assets/headshot.jpg';
+
+const featured = (await getCollection('projects', ({ data }) => data.featured)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<BaseLayout>
+  <section class="hero">
+    <Image src={headshot} alt={`Portrait of ${site.name}`} width={240} class="portrait" loading="eager" />
+    <div>
+      <h1>Hi, I'm Keenan.</h1>
+      <p class="role">
+        {site.role} based in {site.location}. {site.tagline}
+      </p>
+      <p class="muted">{site.intro}</p>
+      <div class="actions">
+        <a class="btn primary" href={`mailto:${site.email}`}>Get in touch</a>
+        <a class="btn" href={site.resumeUrl} target="_blank" rel="noopener noreferrer">Resume</a>
+        {
+          site.socials
+            .filter(({ label }) => label !== 'Medium')
+            .map(({ label, url }) => (
+              <a class="btn" href={url} target="_blank" rel="noopener noreferrer">
+                {label}
+              </a>
+            ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>What I do</h2>
+    <ul class="chip-row">
+      {site.services.map((service) => <li class="chip">{service}</li>)}
+    </ul>
+  </section>
+
+  <section>
+    <h2>Selected work</h2>
+    <div class="grid">
+      {featured.map((project) => <ProjectCard project={project} />)}
+    </div>
+    <p><a href="/projects">All projects →</a></p>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+
+  .portrait {
+    border-radius: 50%;
+    width: clamp(96px, 18vw, 150px);
+    height: auto;
+    flex-shrink: 0;
+  }
+
+  .role {
+    font-size: 1.15rem;
+    font-weight: 500;
+    margin: 0 0 0.75rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  @media (max-width: 560px) {
+    .hero {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+  }
+</style>

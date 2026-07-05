@@ -1,0 +1,151 @@
+/*
+ * Global styles + design tokens.
+ * All colors live in the two :root blocks below — tweak them to retheme the site.
+ */
+@import '@fontsource-variable/inter';
+
+:root {
+  --bg: #faf9f7;
+  --bg-alt: #f1efeb;
+  --text: #1c1c1a;
+  --text-muted: #66655f;
+  --accent: #0e7a67;
+  --accent-contrast: #ffffff;
+  --border: #e3e0d9;
+  --shadow: 0 1px 3px rgb(0 0 0 / 0.06), 0 4px 14px rgb(0 0 0 / 0.05);
+
+  --font-body: 'Inter Variable', system-ui, -apple-system, sans-serif;
+  --content-width: 44rem;
+  --wide-width: 64rem;
+}
+
+:root[data-theme='dark'] {
+  --bg: #101214;
+  --bg-alt: #1a1d20;
+  --text: #e8e6e1;
+  --text-muted: #a09f97;
+  --accent: #4fc9ae;
+  --accent-contrast: #0c1a16;
+  --border: #2a2e32;
+  --shadow: 0 1px 3px rgb(0 0 0 / 0.4), 0 4px 14px rgb(0 0 0 / 0.3);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.6;
+  font-size: 1.0625rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+}
+
+main.wide {
+  max-width: var(--wide-width);
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 650;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  margin: 0 0 0.5rem;
+}
+
+h2 {
+  font-size: 1.375rem;
+  margin: 2.5rem 0 1rem;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-alt);
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.btn:hover {
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.btn.primary:hover {
+  filter: brightness(1.08);
+}
+
+/* Chips (skills, tags) */
+.chip {
+  display: inline-block;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-alt);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0.75rem 0;
+  list-style: none;
+}

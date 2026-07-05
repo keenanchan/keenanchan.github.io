@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { site } from '../data/site';
+
+const projects = (await getCollection('projects')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const medium = site.socials.find(({ label }) => label === 'Medium');
+---
+
+<BaseLayout title={`Projects — ${site.name}`} wide>
+  <h1>Projects</h1>
+  <p class="muted">
+    Data stories and analyses, published on{' '}
+    <a href={medium?.url} target="_blank" rel="noopener noreferrer">Medium</a>.
+  </p>
+  <div class="grid">
+    {projects.map((project) => <ProjectCard project={project} />)}
+  </div>
+</BaseLayout>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+</style>

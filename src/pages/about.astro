@@ -1,0 +1,157 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+import { experience, education, skills } from '../data/resume';
+import hongkong from '../assets/hongkong.jpg';
+import { Image } from 'astro:assets';
+
+// resolve logo filenames from resume.ts to imported images
+const logos = import.meta.glob<{ default: ImageMetadata }>('../assets/logos/*.png', {
+  eager: true,
+});
+const logo = (name?: string) => (name ? logos[`../assets/logos/${name}`]?.default : undefined);
+---
+
+<BaseLayout title={`About — ${site.name}`}>
+  <h1>About</h1>
+  <p>
+    I'm a data analyst based in {site.location} with a background spanning consulting,
+    analytics engineering, and machine learning. I recently completed my M.S. in Business
+    Analytics at the University of Washington, and I spent three years in consulting where my
+    work informed market and customer strategy for over 13 million customers.
+  </p>
+  <p>
+    These days I'm focused on research analytics and data engineering — and volunteering my
+    skills through Data for Good.
+  </p>
+
+  <h2>Skills</h2>
+  <h3 class="sub">Core competencies</h3>
+  <ul class="chip-row">
+    {skills.core.map((skill) => <li class="chip">{skill}</li>)}
+  </ul>
+  <h3 class="sub">Tools</h3>
+  <ul class="chip-row">
+    {skills.tools.map((tool) => <li class="chip">{tool}</li>)}
+  </ul>
+
+  <h2>Experience</h2>
+  {
+    experience.map((role) => (
+      <article class="entry">
+        {logo(role.logo) ? (
+          <Image src={logo(role.logo)!} alt={`${role.company} logo`} width={96} class="logo" />
+        ) : (
+          <div class="logo placeholder" aria-hidden="true">
+            {role.company[0]}
+          </div>
+        )}
+        <div>
+          <h3>{role.title}</h3>
+          <p class="meta muted">
+            {role.company} · {role.period}
+          </p>
+          <ul>
+            {role.bullets.map((bullet) => (
+              <li>{bullet}</li>
+            ))}
+          </ul>
+        </div>
+      </article>
+    ))
+  }
+
+  <h2>Education</h2>
+  {
+    education.map((entry) => (
+      <article class="entry">
+        {logo(entry.logo) && (
+          <Image src={logo(entry.logo)!} alt={`${entry.school} seal`} width={96} class="logo" />
+        )}
+        <div>
+          <h3>{entry.degree}</h3>
+          <p class="meta muted">
+            {entry.school} · {entry.period}
+          </p>
+          <ul>
+            {entry.notes.map((note) => (
+              <li>{note}</li>
+            ))}
+          </ul>
+        </div>
+      </article>
+    ))
+  }
+
+  <h2>Beyond work</h2>
+  <p>
+    Chinese calligraphy, Hong Kong transit systems, hiking in the Pacific Northwest, and
+    tinkering with self-hosted tools and multi-agent AI systems.
+  </p>
+  <Image src={hongkong} alt="Hong Kong skyline at night" width={1400} class="banner" />
+
+  <h2>Say hello</h2>
+  <p>
+    <a href={`mailto:${site.email}`}>{site.email}</a> · {site.phone}
+  </p>
+</BaseLayout>
+
+<style>
+  .sub {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin: 1.25rem 0 0.25rem;
+  }
+
+  .entry {
+    display: flex;
+    gap: 1.15rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .entry h3 {
+    margin: 0;
+    font-size: 1.05rem;
+  }
+
+  .entry .meta {
+    margin: 0.15rem 0 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .entry ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    font-size: 0.95rem;
+  }
+
+  .entry li {
+    margin-bottom: 0.25rem;
+  }
+
+  .logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 0.6rem;
+    object-fit: contain;
+    flex-shrink: 0;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    padding: 4px;
+  }
+
+  .logo.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 650;
+    color: var(--accent);
+    font-size: 1.2rem;
+  }
+
+  .banner {
+    border-radius: 0.9rem;
+    margin-top: 0.5rem;
+  }
+</style>
